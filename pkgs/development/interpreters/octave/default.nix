@@ -54,8 +54,12 @@ stdenv.mkDerivation rec {
 
   # Keep a copy of the octave tests detailed results in the output
   # derivation, because someone may care
+
+  # Add gnuplot to PATH if specified as build input.
   postInstall = ''
     cp test/fntests.log $out/share/octave/${name}-fntests.log || true
+  '' + stdenv.lib.optionalString (gunplot != null) ''
+    wrapProgram $out/bin/octave --suffix PATH : ${gnuplot}/bin
   '';
 
   passthru = {
