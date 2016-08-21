@@ -335,6 +335,7 @@
   the-kenny = "Moritz Ulrich <moritz@tarn-vedra.de>";
   theuni = "Christian Theune <ct@flyingcircus.io>";
   thoughtpolice = "Austin Seipp <aseipp@pobox.com>";
+  timor = "Timor <timor.dd@googlemail.com>";
   titanous = "Jonathan Rudenberg <jonathan@titanous.com>";
   tohl = "Tomas Hlavaty <tom@logand.com>";
   tokudan = "Daniel Frank <git@danielfrank.net>";
