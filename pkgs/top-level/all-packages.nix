@@ -3318,6 +3318,8 @@ let
 
   spiped = callPackage ../tools/networking/spiped { };
 
+  spnav = callPackage ../development/libraries/spnav { };
+
   sqliteman = callPackage ../applications/misc/sqliteman { };
 
   stardict = callPackage ../applications/misc/stardict/stardict.nix {
