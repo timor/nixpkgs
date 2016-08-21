@@ -3312,6 +3312,8 @@ let
     inherit (python3Packages) buildPythonApplication python isPy3k dbus pygobject3 mpd2;
   };
 
+  spacenavd = callPackage ../servers/spacenavd { };
+
   sparsehash = callPackage ../development/libraries/sparsehash { };
 
   spiped = callPackage ../tools/networking/spiped { };
