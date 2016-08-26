@@ -1,0 +1,18 @@
+diff -c --label /tmp/octave-4.0.1/configure --label \#\<buffer\ configure\> /tmp/octave-4.0.1/configure /tmp/buffer-content-4754m5q
+--- a/configure
++++ b/configure
+@@ -15359,7 +15359,7 @@
+ LLVM_LDFLAGS=
+ LLVM_LIBS=
+ 
+-if test $build_jit = yes; then
++# if test $build_jit = yes; then
+ 
+   ## Find llvm-config program from environment variable or by searching
+ 
+@@ -15970,7 +15970,7 @@
+ 
+ 
+   fi
+-fi
++#fi
