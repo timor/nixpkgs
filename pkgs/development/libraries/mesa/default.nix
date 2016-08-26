@@ -162,7 +162,7 @@ stdenv.mkDerivation {
   '';
   #ToDo: @vcunat isn't sure if drirc will be found when in $out/etc/, but it doesn't seem important ATM
 
-  passthru = { inherit libdrm version driverLink; };
+  passthru = { inherit libdrm version driverLink; llvm = llvmPackages.llvm; };
 
   meta = {
     description = "An open source implementation of OpenGL";
