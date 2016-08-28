@@ -6897,6 +6897,8 @@ let
     camlimages = ocamlPackages.camlimages_4_0;
   };
 
+  gl2ps = callPackage ../development/libraries/gl2ps { };
+
   gmime = callPackage ../development/libraries/gmime { };
 
   gmm = callPackage ../development/libraries/gmm { };
