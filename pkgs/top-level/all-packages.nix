@@ -1497,6 +1497,8 @@ let
 
   eplot = callPackage ../tools/graphics/eplot { };
 
+  epstool = callPackage ../tools/graphics/epstool { };
+
   ethtool = callPackage ../tools/misc/ethtool { };
 
   ettercap = callPackage ../applications/networking/sniffers/ettercap { };
