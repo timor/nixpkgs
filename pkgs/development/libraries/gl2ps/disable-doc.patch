@@ -1,0 +1,31 @@
+diff -c --label /tmp/gl2ps-1.3.9-source/CMakeLists.txt --label \#\<buffer\ CMakeLists.txt\> /tmp/gl2ps-1.3.9-source/CMakeLists.txt /tmp/buffer-content-5266UQb
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -150,25 +150,6 @@
+   target_link_libraries(gl2psTestSimple lib ${EXTERNAL_LIBRARIES})
+ endif(GLUT_FOUND)
+ 
+-find_package(LATEX)
+-if(PDFLATEX_COMPILER)
+-  add_custom_command(OUTPUT gl2ps.pdf DEPENDS gl2ps.tex 
+-                     COMMAND ${PDFLATEX_COMPILER} ARGS ${CMAKE_SOURCE_DIR}/gl2ps.tex
+-                     COMMAND ${PDFLATEX_COMPILER} ARGS ${CMAKE_SOURCE_DIR}/gl2ps.tex
+-                     COMMAND ${PDFLATEX_COMPILER} ARGS ${CMAKE_SOURCE_DIR}/gl2ps.tex
+-                     COMMAND ${CMAKE_COMMAND} -E copy gl2ps.pdf ${CMAKE_SOURCE_DIR})
+-  add_custom_target(pdf ALL DEPENDS gl2ps.pdf)
+-  install(FILES gl2ps.pdf DESTINATION ${GL2PS_DOC})
+-  find_program(TTH tth)
+-  if(TTH)
+-    add_custom_command(OUTPUT gl2ps.html DEPENDS gl2ps.tex gl2ps.pdf
+-                       COMMAND ${CMAKE_COMMAND} -E copy_if_different 
+-                       ${CMAKE_SOURCE_DIR}/gl2ps.tex ${CMAKE_BINARY_DIR}/gl2ps.tex
+-                       COMMAND ${TTH} ARGS -w1 gl2ps.tex)
+-    add_custom_target(html DEPENDS gl2ps.html)
+-  endif(TTH)
+-endif(PDFLATEX_COMPILER)
+-
+ set(CPACK_PACKAGE_VENDOR "Christophe Geuzaine")
+ set(CPACK_PACKAGE_VERSION_MAJOR ${GL2PS_MAJOR_VERSION})
+ set(CPACK_PACKAGE_VERSION_MINOR ${GL2PS_MINOR_VERSION})
+
+Diff finished.  Fri Aug 26 22:53:16 2016
