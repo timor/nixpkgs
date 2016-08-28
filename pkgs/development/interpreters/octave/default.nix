@@ -1,6 +1,6 @@
-{ stdenv, fetchurl, gfortran, readline, ncurses, perl, flex, texinfo, qhull
-, libX11, graphicsmagick, pcre, pkgconfig, mesa, mesa_noglu, fltk
-, fftw, fftwSinglePrec, zlib, curl, qrupdate, openblas, makeWrapper
+{ stdenv, fetchurl, gfortran, readline, ncurses, perl, flex, texinfo, qhull, gl2ps, epstool
+, libX11, graphicsmagick, pcre, pkgconfig, mesa, mesa_noglu, fltk, transfig
+, fftw, fftwSinglePrec, zlib, curl, qrupdate, openblas, makeWrapper, pstoedit
 , qt ? null, qscintilla ? null, ghostscript ? null, llvm ? null, hdf5 ? null,glpk ? null
 , suitesparse ? null, gnuplot ? null, jdk ? null, python ? null, osmesa ? null
 }:
@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ gfortran readline ncurses perl flex texinfo qhull libX11
     graphicsmagick pcre pkgconfig mesa fltk zlib curl openblas
-    fftw fftwSinglePrec qrupdate makeWrapper ]
+    fftw fftwSinglePrec qrupdate makeWrapper transfig pstoedit epstool gl2ps ]
     ++ (stdenv.lib.optional (qt != null) qt)
     ++ (stdenv.lib.optional (qscintilla != null) qscintilla)
     ++ (stdenv.lib.optional (ghostscript != null) ghostscript)
@@ -66,8 +66,9 @@ stdenv.mkDerivation rec {
   # derivation, because someone may care
 
   # Add gnuplot and ghostscript to PATH if specified as build input.
-  wrapList = (stdenv.lib.optional (gnuplot != null) gnuplot)
-           ++(stdenv.lib.optional (ghostscript != null) ghostscript);
+  wrapList = [ transfig epstool pstoedit]
+              ++ (stdenv.lib.optional (gnuplot != null) gnuplot)
+              ++ (stdenv.lib.optional (ghostscript != null) ghostscript);
   postInstall = ''
     cp test/fntests.log $out/share/octave/${name}-fntests.log || true
   '' + stdenv.lib.optionalString (wrapList != []) ''
