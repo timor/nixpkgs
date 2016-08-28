@@ -1,0 +1,15 @@
+diff -c --label /tmp/nix-build-epstool-3.08.drv-0/epstool-3.08/makefile --label \#\<buffer\ makefile\> /tmp/nix-build-epstool-3.08.drv-0/epstool-3.08/makefile /tmp/buffer-content-1912Gwd
+--- a/makefile
++++ b/makefile
+@@ -45,8 +45,7 @@
+ 
+ include $(SRCDIR)/common.mak
+ 
+-EPSTOOL_ROOT=/usr/local
+-EPSTOOL_BASE=$(prefix)$(EPSTOOL_ROOT)
++EPSTOOL_BASE=$(EPSTOOL_ROOT)
+ EPSTOOL_DOCDIR=$(EPSTOOL_BASE)/share/doc/epstool-$(EPSTOOL_VERSION)
+ EPSTOOL_MANDIR=$(EPSTOOL_BASE)/man
+ EPSTOOL_BINDIR=$(EPSTOOL_BASE)/bin
+
+Diff finished.  Sun Aug 28 13:01:59 2016
