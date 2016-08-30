@@ -40,6 +40,13 @@ stdenv.mkDerivation rec {
     )
   '';
 
+
+  # remove kpasswd, which is only supplied for pre-krb5 and produces a
+  # collision when installed
+  postInstall = ''
+    rm $out/bin/kpasswd
+    '';
+
   meta = with stdenv.lib; {
     description = "Open AFS client";
     homepage = https://www.openafs.org;
