@@ -1,14 +1,21 @@
 { config, pkgs, lib, ... }:
 
 let
-  inherit (lib) mkOption mkIf;
+  inherit (lib) mkOption mkIf concatStringsSep;
 
   cfg = config.services.openafsClient;
 
-  cellServDB = pkgs.fetchurl {
+  upstreamCellServDB = pkgs.fetchurl {
     url = http://dl.central.org/dl/cellservdb/CellServDB.2016-01-01;
     sha256 = "03pp3fyf45ybjsmmmrp5ibdcjmrcc2l0zax0nvlij1n9fg6a2dzg";
   };
+
+  cellServDB = if (cfg.cellName != "") && (cfg.cellServers != []) then
+    pkgs.runCommand "CellServDB" {} ''
+      printf ">${cfg.cellName}\n" >> $out
+      printf "${concatStringsSep "\n" (map ({ address, hostname }: concatStringsSep " \#" [ address hostname ]) cfg.cellServers)}\n" >> $out
+      cat ${upstreamCellServDB} >> $out
+    '' else upstreamCellServDB;
 
   afsConfig = pkgs.runCommand "afsconfig" {} ''
     mkdir -p $out
@@ -33,7 +40,12 @@ in
 
       cellName = mkOption {
         default = "grand.central.org";
-        description = "Cell name.";
+        description = "This cell's name.";
+      };
+
+      cellServers = mkOption {
+        default = [];
+	description = "This cell's servers, a list of {address, hostname} sets.";
       };
 
       cacheSize = mkOption {
