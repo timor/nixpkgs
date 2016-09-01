@@ -100,5 +100,8 @@ in
         ${pkgs.kmod}/sbin/rmmod libafs
       '';
     };
+
+    networking.firewall.allowedUDPPorts = [ 7001 ];
+
   };
 }
