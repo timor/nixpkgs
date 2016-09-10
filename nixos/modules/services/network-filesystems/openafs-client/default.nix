@@ -98,7 +98,7 @@ in
         mkdir -p -m 0755 /afs
         ${lib.optionalString (cfg.memCache == false) "mkdir -m 0700 -p ${cfg.cacheDirectory}"}
         ${pkgs.kmod}/bin/insmod ${openafsPkgs}/lib/openafs/libafs-*.ko || true
-        ${openafsPkgs}/sbin/afsd -confdir ${afsConfig} ${if cfg.memCache then "-memcache" else "-cachedir ${cfg.cacheDirectory}"} ${if cfg.sparse then "-dynroot-sparse" else "-dynroot"} -fakestat -afsdb
+        ${openafsPkgs}/sbin/afsd -confdir ${afsConfig} ${if cfg.memCache then "-memcache" else "-cachedir ${cfg.cacheDirectory}"} ${if cfg.sparse then "-dynroot-sparse" else "-dynroot"} -fakestat
         ${openafsPkgs}/bin/fs setcrypt ${if cfg.crypt then "on" else "off"}
       '';
 
