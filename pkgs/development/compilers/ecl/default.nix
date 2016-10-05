@@ -1,7 +1,8 @@
 {stdenv, fetchurl
 , libtool, autoconf, automake
 , gmp, mpfr, libffi
-, noUnicode ? false, 
+, noUnicode ? false
+, makeWrapper
 }:
 let
   s = # Generated upstream information
@@ -14,7 +15,7 @@ let
     sha256="0czh78z9i5b7jc241mq1h1gdscvdw5fbhfb0g9sn4rchwk1x8gil";
   };
   buildInputs = [
-    libtool autoconf automake
+    libtool autoconf automake makeWrapper
   ];
   propagatedBuildInputs = [
     libffi gmp mpfr
@@ -37,6 +38,8 @@ stdenv.mkDerivation {
     ;
   postInstall = ''
     sed -e 's/@[-a-zA-Z_]*@//g' -i $out/bin/ecl-config
+    wrapProgram $out/bin/ecl \
+      --prefix PATH ':' "${stdenv.lib.makeBinPath [ stdenv.cc ]}"
   '';
   meta = {
     inherit (s) version;
