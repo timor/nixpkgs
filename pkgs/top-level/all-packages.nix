@@ -4839,6 +4839,8 @@ in
 
   oraclejre8psu = lowPrio (self.oraclejdk8psu_distro false false);
 
+  oraclejre8_i686 = lowPrio (callPackage_i686 ../development/compilers/oraclejdk/jdk8cpu-linux.nix { installjdk = false; });
+
   jrePlugin = self.jre8Plugin;
 
   jre7Plugin = lowPrio (pkgs.oraclejdk7distro false true);
