@@ -55,7 +55,7 @@ stdenv.mkDerivation rec {
     maintainers = [ maintainers.z77z ];
     broken =
       (builtins.compareVersions kernel.version  "3.18" == -1) ||
-      (builtins.compareVersions kernel.version "4.4" != -1) ||
+      (builtins.compareVersions kernel.version "4.6" != -1) ||
       (kernel.features.grsecurity or false);
   };
 }
