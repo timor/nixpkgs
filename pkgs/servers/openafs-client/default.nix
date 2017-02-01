@@ -35,7 +35,8 @@ stdenv.mkDerivation rec {
     configureFlagsArray=(
       "--with-linux-kernel-build=$TMP/linux"
       ${stdenv.lib.optionalString (kerberos != null) "--with-krb5"}
-      "--sysconfdir=/etc/static"
+      "--sysconfdir=/etc"
+      "--localstatedir=/var"
       "--disable-linux-d_splice-alias-extra-iput"
     )
   '';
