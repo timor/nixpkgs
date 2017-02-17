@@ -10461,6 +10461,8 @@ in
 
   oauth2_proxy = callPackage ../servers/oauth2_proxy { };
 
+  openhab = callPackage ../servers/openhab { jre = oraclejre8_i686; };
+
   openpts = callPackage ../servers/openpts { };
 
   openresty = callPackage ../servers/http/openresty { };
