@@ -18530,6 +18530,8 @@ with pkgs;
 
   nlojet = callPackage ../development/libraries/physics/nlojet { };
 
+  openfoam = libsForQt5.callPackage ../applications/science/physics/openfoam { };
+
   pythia = callPackage ../development/libraries/physics/pythia { };
 
   rivet = callPackage ../development/libraries/physics/rivet { };
