@@ -83,6 +83,8 @@ let
 
     lldb = callPackage ./lldb.nix {};
 
+    mlir = callPackage ./mlir.nix {};
+
     # Below, is the LLVM bootstrapping logic. It handles building a
     # fully LLVM toolchain from scratch. No GCC toolchain should be
     # pulled in. As a consequence, it is very quick to build different
