@@ -19,29 +19,47 @@
   || stdenv.isAarch32 # broken for the armv7l builder
 )
 , enablePolly ? false
+, fetchFromGitHub
 }:
 
 let
   inherit (lib) optional optionals optionalString;
+  release_version = "13.0.0";
+  candidate = "rc0"; # empty or "rcN"
+  dash-candidate = lib.optionalString (candidate != "") "-${candidate}";
+  version = "${release_version}${dash-candidate}"; # differentiating these (variables) is important for RCs
 
   # Used when creating a version-suffixed symlink of libLLVM.dylib
   shortVersion = with lib;
     concatStringsSep "." (take 1 (splitString "." release_version));
 
+  gitsrc = fetchFromGitHub {
+    owner = "circt";
+    repo = "llvm";
+    rev = "f178c13fa89960c7247a6367269919acf87fd1b3";
+    sha256 = "0jrrvqrqxc294gg8rj2rj41mfqwcsd952vzssk1ja4hhwbsh4n4k";
+    # fetchSubmodules = true;
+  };
+
 in stdenv.mkDerivation (rec {
   pname = "llvm";
   inherit version;
 
-  src = fetch pname "199yq3a214avcbi4kk2q0ajriifkvsr0l2dkx3a666m033ihi1ff";
-  polly_src = fetch "polly" "031r23ijhx7v93a5n33m2nc0x9xyqmx0d8xg80z7q971p6qd63sq";
+  # src = fetch pname "199yq3a214avcbi4kk2q0ajriifkvsr0l2dkx3a666m033ihi1ff";
+  # polly_src = fetch "polly" "031r23ijhx7v93a5n33m2nc0x9xyqmx0d8xg80z7q971p6qd63sq";
 
-  unpackPhase = ''
-    unpackFile $src
-    mv llvm-${release_version}* llvm
-    sourceRoot=$PWD/llvm
-  '' + optionalString enablePolly ''
-    unpackFile $polly_src
-    mv polly-* $sourceRoot/tools/polly
+  src = gitsrc ;
+
+  # unpackPhase = ''
+  #   unpackFile $src
+  #   mv llvm-${release_version}* llvm
+  #   sourceRoot=$PWD/llvm
+  # '' + optionalString enablePolly ''
+  #   unpackFile $polly_src
+  #   mv polly-* $sourceRoot/tools/polly
+  # '';
+  postUnpack = ''
+    sourceRoot=source/llvm
   '';
 
   outputs = [ "out" "python" ]
@@ -100,13 +118,17 @@ in stdenv.mkDerivation (rec {
 
   cmakeFlags = with stdenv; [
     "-DCMAKE_BUILD_TYPE=${if debugVersion then "Debug" else "Release"}"
-    "-DLLVM_INSTALL_UTILS=ON"  # Needed by rustc
-    "-DLLVM_BUILD_TESTS=ON"
-    "-DLLVM_ENABLE_FFI=ON"
-    "-DLLVM_ENABLE_RTTI=ON"
+    # "-DLLVM_INSTALL_UTILS=ON"  # Needed by rustc
+    # "-DLLVM_BUILD_TESTS=ON"
+    # "-DLLVM_ENABLE_FFI=ON"
+    # "-DLLVM_ENABLE_RTTI=ON"
     "-DLLVM_HOST_TRIPLE=${stdenv.hostPlatform.config}"
     "-DLLVM_DEFAULT_TARGET_TRIPLE=${stdenv.hostPlatform.config}"
-    "-DLLVM_ENABLE_DUMP=ON"
+    # "-DLLVM_ENABLE_DUMP=ON"
+    # "-DLLVM_TOOL_MLIR_BUILD=ON"
+    "-DLLVM_ENABLE_PROJECTS=mlir"
+    "-DLLVM_TARGETS_TO_BUILD=X86;RISCV"
+    "-DLLVM_ENABLE_ASSERTIONS=ON"
   ] ++ optionals enableSharedLibraries [
     "-DLLVM_LINK_LLVM_DYLIB=ON"
   ] ++ optionals enableManpages [
@@ -155,6 +177,8 @@ in stdenv.mkDerivation (rec {
   doCheck = stdenv.isLinux && (!stdenv.isx86_32) && (!stdenv.hostPlatform.isMusl);
 
   checkTarget = "check-all";
+
+  enableParallelBuilding = true;
 
   requiredSystemFeatures = [ "big-parallel" ];
   meta = {
